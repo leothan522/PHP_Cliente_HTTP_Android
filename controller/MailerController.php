@@ -4,9 +4,9 @@ namespace controller;
 
 use Dotenv\Dotenv;
 
-$rutaActual = $_SERVER['SCRIPT_FILENAME'];
-$rutaEnv = explode('android/', $rutaActual);
-$dotenv = Dotenv::createImmutable($rutaEnv);
+//$rutaActual = $_SERVER['SCRIPT_FILENAME'];
+//$rutaEnv = explode('android/', $rutaActual);
+$dotenv = Dotenv::createImmutable('../laravel');
 $dotenv->load();
 
 use PHPMailer\PHPMailer\PHPMailer;

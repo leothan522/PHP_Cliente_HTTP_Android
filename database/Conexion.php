@@ -7,9 +7,9 @@ use Dotenv\Dotenv;
 
 header("Access-Control-Allow-Origin: *");
 date_default_timezone_set('America/Caracas');
-$rutaActual = $_SERVER['SCRIPT_FILENAME'];
-$rutaEnv = explode('android/', $rutaActual);
-$dotenv = Dotenv::createImmutable($rutaEnv);
+//$rutaActual = $_SERVER['SCRIPT_FILENAME'];
+//$rutaEnv = explode('android/', $rutaActual);
+$dotenv = Dotenv::createImmutable('../laravel');
 $dotenv->load();
 
 class Conexion
