@@ -1,0 +1,18 @@
+{
+  "require": {
+    "vlucas/phpdotenv": "^5.5",
+    "phpmailer/phpmailer": "^6.8",
+    "ext-pdo": "*",
+    "ext-json": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "database\\": "database",
+      "model\\": "model",
+      "controller\\": "controller"
+    },
+    "files": [
+      "funciones/Funciones.php"
+    ]
+  }
+}
