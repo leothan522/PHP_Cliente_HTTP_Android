@@ -1,12 +1,10 @@
 <?php
 namespace controller;
 
-require_once dirname(__FILE__, 3).'\\env_path.php';
-
 use Dotenv\Dotenv;
 use model\User;
 
-$dotenv = Dotenv::createImmutable(ENV_PATH);
+$dotenv = Dotenv::createImmutable('../laravel');
 $dotenv->load();
 
 class IndexController

@@ -1,11 +1,9 @@
 <?php
 namespace controller;
 
-require_once dirname(__FILE__, 3).'\\env_path.php';
-
 use Dotenv\Dotenv;
 
-$dotenv = Dotenv::createImmutable(ENV_PATH);
+$dotenv = Dotenv::createImmutable('../laravel');
 $dotenv->load();
 
 use PHPMailer\PHPMailer\PHPMailer;

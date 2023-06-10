@@ -1,15 +1,13 @@
 <?php
 namespace database;
 
-require_once dirname(__FILE__, 3).'\\env_path.php';
-
 use PDO;
 use Dotenv\Dotenv;
 
 header("Access-Control-Allow-Origin: *");
 date_default_timezone_set('America/Caracas');
 
-$dotenv = Dotenv::createImmutable(ENV_PATH);
+$dotenv = Dotenv::createImmutable('../laravel');
 $dotenv->load();
 
 class Conexion
