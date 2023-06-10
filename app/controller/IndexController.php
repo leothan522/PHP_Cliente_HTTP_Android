@@ -1,13 +1,12 @@
 <?php
-
 namespace controller;
+
+require_once dirname(__FILE__, 3).'\\env_path.php';
 
 use Dotenv\Dotenv;
 use model\User;
 
-//$rutaActual = $_SERVER['SCRIPT_FILENAME'];
-//$rutaEnv = explode('android/', $rutaActual);
-$dotenv = Dotenv::createImmutable('../laravel');
+$dotenv = Dotenv::createImmutable(ENV_PATH);
 $dotenv->load();
 
 class IndexController

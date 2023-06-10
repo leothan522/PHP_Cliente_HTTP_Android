@@ -41,9 +41,4 @@ class Query extends Conexion
         return $count;
     }
 
-    public function prueba()
-    {
-        return "Hola QUERY";
-    }
-
 }

@@ -7,12 +7,12 @@
   },
   "autoload": {
     "psr-4": {
-      "database\\": "database",
-      "model\\": "model",
-      "controller\\": "controller"
+      "database\\": "app/database",
+      "model\\": "app/model",
+      "controller\\": "app/controller"
     },
     "files": [
-      "funciones/Funciones.php"
+      "app/funciones/Funciones.php"
     ]
   }
 }

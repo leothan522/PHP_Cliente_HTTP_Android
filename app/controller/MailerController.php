@@ -1,12 +1,11 @@
 <?php
-
 namespace controller;
+
+require_once dirname(__FILE__, 3).'\\env_path.php';
 
 use Dotenv\Dotenv;
 
-//$rutaActual = $_SERVER['SCRIPT_FILENAME'];
-//$rutaEnv = explode('android/', $rutaActual);
-$dotenv = Dotenv::createImmutable('../laravel');
+$dotenv = Dotenv::createImmutable(ENV_PATH);
 $dotenv->load();
 
 use PHPMailer\PHPMailer\PHPMailer;
@@ -15,19 +14,22 @@ use PHPMailer\PHPMailer\Exception;
 
 class MailerController
 {
-    public function enviarEmail($email, $asunto, $mensaje, $noHTML)
+    /**
+     * @throws Exception
+     */
+    public function enviarEmail($email, $asunto, $mensaje, $noHTML): void
     {
         // Al pasar true habilitamos las excepciones
         $mail = new PHPMailer(true);
         // Ajustes del Servidor
         //$mail->SMTPDebug = SMTP::DEBUG_SERVER; // Comenta esto antes de producción
         $mail->isSMTP();
-        $mail->Host = 'smtp.gmail.com';
+        $mail->Host = $_ENV['MAIL_HOST'];
         $mail->SMTPAuth = true;
         $mail->Username = $_ENV['MAIL_USERNAME'];
         $mail->Password = $_ENV['MAIL_PASSWORD'];
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port = 587;
+        $mail->Port = $_ENV['MAIL_PORT'];
 
         // Destinatario
         $mail->setFrom($_ENV['MAIL_FROM_ADDRESS'], $_ENV['APP_NAME']);

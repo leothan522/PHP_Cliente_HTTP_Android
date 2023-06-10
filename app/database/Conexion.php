@@ -1,21 +1,21 @@
 <?php
-
 namespace database;
+
+require_once dirname(__FILE__, 3).'\\env_path.php';
 
 use PDO;
 use Dotenv\Dotenv;
 
 header("Access-Control-Allow-Origin: *");
 date_default_timezone_set('America/Caracas');
-//$rutaActual = $_SERVER['SCRIPT_FILENAME'];
-//$rutaEnv = explode('android/', $rutaActual);
-$dotenv = Dotenv::createImmutable('../laravel');
+
+$dotenv = Dotenv::createImmutable(ENV_PATH);
 $dotenv->load();
 
 class Conexion
 {
 
-    public $CONEXION;
+    public PDO $CONEXION;
 
     public function __construct()
     {

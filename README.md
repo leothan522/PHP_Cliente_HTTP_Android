@@ -1,4 +1,4 @@
-# Un cliente HTTP seguro para Android y Java
+# Un servidor HTTP seguro para Android y Java
 ### Utilizando **PHP y Mysql**
 ## Tecnologías
 Lista de tecnologías utilizadas en el proyecto:
