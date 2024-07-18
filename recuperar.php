@@ -31,12 +31,13 @@ if ($_POST) {
                 $hoy = date("Y-m-d H:i:s");
 
                 $mailer = new MailerController();
-                $asunto = utf8_decode('Notificación de restablecimiento de contraseña');
+                $asunto = verUtf8('Notificación de restablecimiento de contraseña');
                 //$mensaje = 'Hola, este es tu nuevo Password: <h4 style="color: blue">'.$password.'</h4> Asegurate de guardar bien la clave.';
                 $mensaje = file_get_contents('app/view/email.php', FILE_USE_INCLUDE_PATH);
                 $mensaje = str_replace('%APP_URL%', $_ENV['APP_URL'], $mensaje);
                 $mensaje = str_replace('%APP_NAME%', $_ENV['APP_NAME'], $mensaje);
                 $mensaje = str_replace('%URL_RECUPERAR%', $url_recuperar, $mensaje);
+                $mensaje = str_replace('%APP_YEAR%', date('Y'), $mensaje);
 
                 //$noHTML = "Este es un mensaje para los clientes que no soportan HTML. Nuevo Password: $password";
                 $texto = "Este es un mensaje para los clientes de que no soportan HTML. \n 
@@ -47,7 +48,7 @@ if ($_POST) {
                           Si no ha solicitado el restablecimiento de contraseña, omita este mensaje de correo electrónico. \n
                           Saludos, \n
                           ".$_ENV['APP_NAME'];
-                $noHTML = utf8_decode($texto);
+                $noHTML = verUtf8($texto);
                 $mailer->enviarEmail($email, $asunto, $mensaje, $noHTML);
 
                 $users->update($existe['id'], 'token_recuperacion', $token);

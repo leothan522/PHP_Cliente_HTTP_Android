@@ -11,3 +11,8 @@ function generateString($strength = 16): string
     }
     return $random_string;
 }
+
+function verUtf8($string){
+    //$utf8_string = "Some UTF-8 encoded BATE QUEBRADO ÑñíÍÁÜ niño ó Ó string: é, ö, ü";
+    return mb_convert_encoding($string, 'ISO-8859-1', 'UTF-8');
+}
