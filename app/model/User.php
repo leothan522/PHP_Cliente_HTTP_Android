@@ -16,6 +16,7 @@ class User extends Model
             'password',
             'telefono',
             'fcm_token',
+            'rowquid',
             'created_at',
         ];
     }

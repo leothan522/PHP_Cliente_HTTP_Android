@@ -35,6 +35,7 @@ if ($_POST) {
                     password_hash($password, PASSWORD_DEFAULT),
                     $telefono,
                     $fcm_token,
+                    generateString(16),
                     date('Y-m-d H:i:s')
                 ];
 
