@@ -9,74 +9,117 @@ class Model
     public $TABLA;
     public $DATA;
 
-    public function getAll($band = null)
+    public function getAll($band = null, $orderBy = null, $opt ='ASC', $limit = null): array
     {
         $extra = null;
+        $order = null;
         if (!is_null($band)) {
             $extra = "WHERE `band`= $band";
         }
+        if (!is_null($orderBy)) {
+            $order = "ORDER BY `$orderBy` $opt";
+        }
+        if (!is_null($limit)){
+            $limit = "LIMIT $limit";
+        }
         $query = new Query();
-        $sql = "SELECT * FROM `$this->TABLA` $extra  ;";
-        $rows = $query->getAll($sql);
-        return $rows;
+        $sql = "SELECT * FROM `$this->TABLA` $extra  $order $limit;";
+        //return $rows
+        return $query->getAll($sql);
     }
 
-    public function paginate($limit, $offset = null, $orderBy = 'id', $opt = 'ASC', $band = null)
+    public function paginate($limit, $offset = null, $orderBy = 'id', $opt = 'ASC', $band = null, $campo = null, $operador = null, $valor = null): array
     {
         $extra = null;
+        $where = null;
+        $columna = null;
         if (!is_null($band)) {
-            $extra = "WHERE `band`= $band";
+            $where = true;
+            $extra = "`band`= $band";
         }
-        if (!is_null($offset)) {
-            $offset = $offset . ",";
+        if (!is_null($offset)){
+            $offset = $offset.",";
         }
+
+        if (!is_null($campo) && !is_null($operador) && !is_null($valor)){
+            $where = true;
+            if (!is_null($extra)){
+                $columna = "`$campo` $operador '$valor' AND";
+            }else{
+                $columna = "`$campo` $operador '$valor'";
+            }
+        }
+
+        if (!is_null($where)){
+            $where = 'WHERE ';
+        }
+
         $query = new Query();
-        $sql = "SELECT * FROM `$this->TABLA` $extra ORDER BY `$orderBy` $opt LIMIT $offset $limit;";
-        $rows = $query->getAll($sql);
-        return $rows;
+        $sql = "SELECT * FROM `$this->TABLA`  $where $columna $extra ORDER BY `$orderBy` $opt LIMIT $offset $limit;";
+        //return $rows
+        return $query->getAll($sql);
     }
 
-    public function getList($campo, $operador, $valor, $band = null)
+    public function getList($campo, $operador, $valor, $band = null, $orderBy = null, $opt ='ASC', $limit = null): array
     {
         $extra = null;
+        $order = null;
         if (!is_null($band)) {
             $extra = "AND `band`= $band";
         }
+        if (!is_null($orderBy)) {
+            $order = "ORDER BY `$orderBy` $opt";
+        }
+
+        if (!is_null($limit)){
+            $limit = 'LIMIT '.$limit;
+        }
+
         $query = new Query();
-        $sql = "SELECT * FROM `$this->TABLA` WHERE `$campo` $operador '$valor' $extra; ";
-        $rows = $query->getAll($sql);
-        return $rows;
+        $sql = "SELECT * FROM `$this->TABLA` WHERE `$campo` $operador '$valor' $extra $order $limit; ";
+        //return $rows
+        return $query->getAll($sql);
     }
 
-    public function count($band = null)
+    public function count($band = null, $campo = null, $operador = null, $valor = null): mixed
     {
         $extra = null;
         if (!is_null($band)) {
             $extra = "WHERE `band`= $band";
         }
+        $contar = null;
+        if (!is_null($campo) && !is_null($operador) && !is_null($campo)){
+            $contar ="WHERE `$campo` $operador '$valor'";
+        }
+
+        if (!is_null($extra) && !is_null($contar)){
+            $extra = "WHERE ";
+            $contar = "`$campo` $operador '$valor' AND `band`= $band";
+        }
+
         $query = new Query();
-        $sql = "SELECT COUNT(*) FROM `$this->TABLA` $extra ;";
-        $rows = $query->count($sql);
-        return $rows;
+        $sql = "SELECT COUNT(*) FROM `$this->TABLA` $extra $contar ;";
+        //return $int
+        return $query->count($sql);
     }
 
-    public function find($id)
+    public function find($id): mixed
     {
         $query = new Query();
         $sql = "SELECT * FROM `$this->TABLA` WHERE `id`= '$id'; ";
-        $rows = $query->getfirst($sql);
-        return $rows;
+        //return $row
+        return $query->getfirst($sql);
     }
 
-    public function first($campo, $operador, $valor)
+    public function first($campo, $operador, $valor): mixed
     {
         $query = new Query();
         $sql = "SELECT * FROM `$this->TABLA` WHERE `$campo` $operador '$valor'; ";
-        $rows = $query->getfirst($sql);
-        return $rows;
+        //return $row
+        return $query->getfirst($sql);
     }
 
-    public function existe($campo, $operador, $valor, $id = null, $band = null)
+    public function existe($campo, $operador, $valor, $id = null, $band = null): mixed
     {
         $extra = null;
         $edit = null;
@@ -88,11 +131,11 @@ class Model
         }
         $query = new Query();
         $sql = "SELECT * FROM `$this->TABLA` WHERE `$campo` $operador '$valor' $extra $edit;";
-        $row = $query->getFirst($sql);
-        return $row;
+        //return $row
+        return $query->getFirst($sql);
     }
 
-    public function save($data = array())
+    public function save($data = array()): bool|\PDOStatement
     {
         $query = new Query();
         $campos = "(";
@@ -103,31 +146,53 @@ class Model
         $campos = str_replace(", )exit", ")", $campos);
         $values = "(";
         foreach ($data as $input) {
-            $values .= "'$input', ";
+            if (is_null($input)){
+                $values .= "NULL, ";
+            }else{
+                $values .= "'$input', ";
+            }
         }
         $values .= ")exit";
         $values = str_replace(", )exit", ")", $values);
 
         $sql = "INSERT INTO `$this->TABLA` $campos VALUES $values;";
-
-        $row = $query->save($sql);
-        return $row;
+        //return $bool
+        return $query->save($sql);
     }
 
-    public function update($id, $campo, $valor)
+    public function update($id, $campo, $valor): bool|\PDOStatement
     {
+        if (is_null($valor)){
+            $values = 'NULL';
+        }else{
+            $values = "'$valor'";
+        }
         $query = new Query();
-        $sql = "UPDATE `$this->TABLA` SET `$campo` = '$valor' WHERE `id` = '$id';";
-        $row = $query->save($sql);
-        return $row;
+        $sql = "UPDATE `$this->TABLA` SET `$campo` = $values WHERE `id` = '$id';";
+        //return $bool
+        return $query->save($sql);
     }
 
-    public function delete($id)
+    public function delete($id): bool|\PDOStatement
     {
         $query = new Query();
         $sql = "DELETE FROM `$this->TABLA` WHERE  `id` = $id;";
-        $row = $query->save($sql);
-        return $row;
+        //return $bool
+        return $query->save($sql);
+    }
+
+    public function sqlPersonalizado($sql, $opcion = 'getFirst')
+    {
+        $query = new Query();
+
+        return match ($opcion) {
+            //return $rows
+            'getAll' => $query->getAll($sql),
+            //return $bool
+            'save' => $query->save($sql),
+            //return $row
+            default => $query->getFirst($sql),
+        };
     }
 
 }

@@ -1,4 +1,4 @@
-<div class="row m-2 justify-content-center <?php echo $index->row_register; ?>" id="row_register">
+<div class="row m-2 justify-content-center <?php echo $controller->row_register; ?>" id="row_register">
 
     <div class="col-md-6">
         <div class="card">
@@ -54,7 +54,7 @@
                             </div>
                         </div>
                     </div>
-                    <input type="hidden" class="form-control mb-3" name="fcm_token" value="<?php echo $index->token;; ?>" readonly>
+                    <input type="hidden" class="form-control mb-3" name="fcm_token" value="<?php echo $controller->token;; ?>" readonly>
                     <div class="form-row justify-content-end">
                         <button type="reset" class="d-none" id="btn_reset_register">Reset</button>
                         <button type="button" class="btn btn-link" onclick="rowVisible('login')">

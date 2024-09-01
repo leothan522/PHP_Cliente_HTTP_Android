@@ -3,8 +3,7 @@ session_start();
 require_once "vendor/autoload.php";
 
 use controller\IndexController;
-
-$index = new IndexController();
+$controller = new IndexController();
 ?>
 <!doctype html>
 <html lang="es">
@@ -13,7 +12,7 @@ $index = new IndexController();
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title><?php echo $index->app_name; ?> | Android</title>
+    <title><?php echo env('APP_NAME', 'APP NAME'); ?> | Android</title>
 
     <link rel="apple-touch-icon" sizes="57x57" href="app/favicon/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="app/favicon/apple-icon-60x60.png">
@@ -56,7 +55,7 @@ $index = new IndexController();
 <script src="app/resources/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="app/resources/sweetalert2/sweetalert2.all.min.js"></script>
 <script src="app/resources/inputmask/jquery.inputmask.min.js"></script>
-<script src="app/js/sweetalert-app.js"></script>
-<script src="app/js/app.js"></script>
+<script src="<?php asset('app/js/sweetalert-app.js', true); ?>"></script>
+<script src="<?php asset('app/js/app.js', true); ?>"></script>
 </body>
 </html>

@@ -9,7 +9,7 @@ $('#form_login').submit(function (e) {
     Cargando.fire();
     $.ajax({
         type: 'POST',
-        url: 'login.php',
+        url: 'login/',
         data: $(this).serialize(),
         success: function (response) {
             let data = JSON.parse(response);
@@ -42,16 +42,21 @@ function showUsuario(id, name, email, telefono) {
     $('#card_body_login').addClass('d-none');
     $('#btn_cerrar_sesion').removeClass('d-none');
     $('#card_footer_login').removeClass('d-none');
-    $('#input_telefono').removeClass('is-invalid');
-    $('#input_telefono').removeClass('is-valid');
-    $('#input_password').removeClass('is-invalid');
-    $('#input_confirmar').removeClass('is-invalid');
-    $('#input_password').removeClass('is-valid');
-    $('#input_confirmar').removeClass('is-valid');
-    $('#input_email').removeClass('is-invalid');
-    $('#input_email').removeClass('is-valid');
-    $('#input_name').removeClass('is-invalid');
-    $('#input_name').removeClass('is-valid');
+    $('#input_telefono')
+        .removeClass('is-invalid')
+        .removeClass('is-valid');
+    $('#input_password')
+        .removeClass('is-invalid')
+        .removeClass('is-valid');
+    $('#input_confirmar')
+        .removeClass('is-invalid')
+        .removeClass('is-valid');
+    $('#input_email')
+        .removeClass('is-invalid')
+        .removeClass('is-valid');
+    $('#input_name')
+        .removeClass('is-invalid')
+        .removeClass('is-valid');
 }
 
 //Cerramos sesion
@@ -59,11 +64,12 @@ $('#btn_cerrar_sesion').click(function (e) {
     Cargando.fire();
     $.ajax({
         type: 'POST',
-        url: 'procesar.php',
+        url: 'login/',
         data: {
-            opcion: 'cerrar_sesion'
+            cerrar_sesion: true
         },
         success: function (response) {
+
             let data = JSON.parse(response);
 
             if (data.result === true) {
@@ -119,7 +125,7 @@ $('#form_register').submit(function (e) {
         Cargando.fire();
         $.ajax({
             type: 'POST',
-            url: 'register.php',
+            url: 'register/',
             data: $(this).serialize(),
             success: function (response) {
                 let data = JSON.parse(response);
@@ -187,7 +193,7 @@ $('#form_recuperar').submit(function (e) {
     Cargando.fire();
     $.ajax({
         type: 'POST',
-        url: 'recuperar.php',
+        url: 'recover/',
         data: $(this).serialize(),
         success: function (response) {
             let data = JSON.parse(response);

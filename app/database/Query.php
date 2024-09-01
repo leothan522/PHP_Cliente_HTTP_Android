@@ -2,8 +2,6 @@
 
 namespace database;
 
-use database\Conexion;
-
 class Query extends Conexion
 {
 

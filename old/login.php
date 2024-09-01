@@ -2,8 +2,7 @@
 session_start();
 require_once "vendor/autoload.php";
 
-use model\User;
-
+use controller\GuestController;
 
 $response = array();
 
@@ -11,47 +10,14 @@ if ($_POST) {
 
     try {
 
-        $users = new User();
 
         if (!empty($_POST['email']) && !empty($_POST['password'])) {
 
             $email = $_POST['email'];
             $password = $_POST['password'];
-
-            $existe = $users->existe('email', '=', $email);
-            if ($existe){
-
-                if (password_verify($password, $existe['password'])){
-
-                    if (!empty($_POST['fcm_token'])){
-                        $users->update($existe['id'], 'fcm_token', $_POST['fcm_token']);
-                    }
-
-                    $response['result'] = true;
-                    $response['icon'] = 'success';
-                    $response['title'] = "Bienvenido ".ucwords($existe['name']);
-                    $response['text'] = "Bienvenido ".ucwords($existe['name']);
-                    $response['id'] = $existe['id'];
-                    $response['name'] = ucwords($existe['name']);
-                    $response['email'] = strtolower($existe['email']);
-                    $response['telefono'] = $existe['telefono'];
-                    $_SESSION['id'] = $existe['id'];
-
-                }else{
-                    $response['result'] = false;
-                    $response['icon'] = 'warning';
-                    $response['title'] = "Contraseña Incorrecta";
-                    $response['text'] = "Estas credenciales no coinciden con nuestros registros.";
-                }
-
-
-            }else{
-                $response['result'] = false;
-                $response['icon'] = 'warning';
-                $response['title'] = "Email NO registrado";
-                $response['text'] = "Estas credenciales no coinciden con nuestros registros.";
-            }
-
+            $fcm_token = $_POST['fcm_token'];
+            $controller = new GuestController();
+            $response = $controller->login($email, $password, $fcm_token);
 
         } else {
             //faltan datos.

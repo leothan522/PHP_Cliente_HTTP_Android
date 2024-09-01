@@ -1,20 +1,10 @@
 <?php
 namespace controller;
 
-use Dotenv\Dotenv;
 use model\User;
 
-$dotenv = Dotenv::createImmutable(PATH_ENV);
-$dotenv->safeLoad();
-
-class IndexController
+class IndexController extends Controller
 {
-    public $token;
-    public $app_name;
-    public $user_id;
-    public $user_name;
-    public $user_email;
-    public $user_telefono;
     public $row_login;
     public $btn_cerrar_sesion = 'd-none';
     public $card_body_login;
@@ -24,22 +14,8 @@ class IndexController
 
     public function __construct()
     {
-        $users = new User();
-
-        if (isset($_SESSION['id'])) {
-            $this->user_id = $_SESSION['id'];
-            $getUser = $users->find($this->user_id);
-            if ($getUser) {
-                $this->user_name = $getUser['name'];
-                $this->user_email = $getUser['email'];
-                $this->user_telefono = $getUser['telefono'];
-            }
-        }
-
-        $this->app_name = $_ENV['APP_NAME'];
-        $this->token = $_ENV['FCM_TOKEN_TEST'];
-
-        if ($this->user_id) {
+        $this->auth();
+        if ($this->USER_ID) {
             $this->card_body_login = "d-none";
             $this->card_footer_login = null;
             $this->btn_cerrar_sesion = null;
