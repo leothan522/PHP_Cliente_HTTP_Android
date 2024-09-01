@@ -15,6 +15,7 @@ class User extends Model
             'email',
             'password',
             'telefono',
+            'plataforma',
             'fcm_token',
             'rowquid',
             'created_at',
