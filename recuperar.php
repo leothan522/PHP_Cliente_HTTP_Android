@@ -2,12 +2,8 @@
 session_start();
 require_once "vendor/autoload.php";
 
-use Dotenv\Dotenv;
 use model\User;
 use controller\MailerController;
-
-$dotenv = Dotenv::createImmutable('../laravel');
-$dotenv->load();
 
 $response = array();
 

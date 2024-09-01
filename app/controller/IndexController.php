@@ -4,8 +4,8 @@ namespace controller;
 use Dotenv\Dotenv;
 use model\User;
 
-$dotenv = Dotenv::createImmutable('../laravel');
-$dotenv->load();
+$dotenv = Dotenv::createImmutable(PATH_ENV);
+$dotenv->safeLoad();
 
 class IndexController
 {

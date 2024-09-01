@@ -1,4 +1,10 @@
 <?php
+use Dotenv\Dotenv;
+
+$dotenv = Dotenv::createImmutable(dirname(__FILE__, 3));
+$dotenv->safeLoad();
+define('PATH_ENV', $_ENV['PATH_ENV']);
+
 
 function generateString($strength = 16): string
 {

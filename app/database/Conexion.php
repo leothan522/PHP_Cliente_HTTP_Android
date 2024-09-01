@@ -7,7 +7,7 @@ use Dotenv\Dotenv;
 header("Access-Control-Allow-Origin: *");
 date_default_timezone_set('America/Caracas');
 
-$dotenv = Dotenv::createImmutable('../laravel');
+$dotenv = Dotenv::createImmutable(PATH_ENV);
 $dotenv->load();
 
 class Conexion

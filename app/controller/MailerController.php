@@ -3,8 +3,8 @@ namespace controller;
 
 use Dotenv\Dotenv;
 
-$dotenv = Dotenv::createImmutable('../laravel');
-$dotenv->load();
+$dotenv = Dotenv::createImmutable(PATH_ENV);
+$dotenv->safeLoad();
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
