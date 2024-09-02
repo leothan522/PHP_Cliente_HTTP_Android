@@ -2,8 +2,6 @@
 
 namespace model;
 
-use model\Model;
-
 class User extends Model
 {
 
@@ -16,7 +14,6 @@ class User extends Model
             'password',
             'telefono',
             'plataforma',
-            'fcm_token',
             'rowquid',
             'created_at',
         ];

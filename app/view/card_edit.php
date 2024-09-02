@@ -58,7 +58,7 @@
                         </div>
                     </div>
                     <input type="text" class="form-control mb-3" name="id" readonly id="input_edit_id">
-                    <input type="text" class="form-control mb-3" name="fcm_token" readonly id="input_edit_fcm_token">
+                    <input type="text" class="form-control mb-3" name="fcm_token" value="<?php echo FCM_TOKEN_TEST; ?>" readonly id="input_edit_fcm_token">
                     <div class="form-row justify-content-end">
                         <button type="reset" class="d-none" id="btn_reset_edit">Reset</button>
                         <button type="button" class="btn btn-link" onclick="rowVisible('login')">

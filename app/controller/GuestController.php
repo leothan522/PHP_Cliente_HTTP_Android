@@ -3,6 +3,7 @@
 namespace controller;
 
 use model\User;
+use model\Fcm;
 use PHPMailer\PHPMailer\Exception;
 
 class GuestController extends MailerController
@@ -17,7 +18,17 @@ class GuestController extends MailerController
             if (password_verify($password, $user['password'])){
 
                 if (!empty($fcm_token)){
-                    $model->update($user['id'], 'fcm_token', $fcm_token);
+                    $modelFCM = new Fcm();
+                    $existe = $modelFCM->existe('token', '=', $fcm_token);
+                    if (!$existe){
+                        $data = [
+                            $user['id'],
+                            $fcm_token,
+                            generateString(16),
+                            getFecha()
+                        ];
+                        $modelFCM->save($data);
+                    }
                 }
 
                 $response['result'] = true;
@@ -57,7 +68,6 @@ class GuestController extends MailerController
                 password_hash($password, PASSWORD_DEFAULT),
                 $telefono,
                 1,
-                $fcm_token,
                 generateString(16),
                 getFecha()
             ];
@@ -65,6 +75,21 @@ class GuestController extends MailerController
             $model->save($data);
 
             $user = $model->first('email', '=', $email);
+
+            if (!empty($fcm_token)){
+                $modelFCM = new Fcm();
+                $existe = $modelFCM->existe('token', '=', $fcm_token);
+                if (!$existe){
+                    $data = [
+                        $user['id'],
+                        $fcm_token,
+                        generateString(16),
+                        getFecha()
+                    ];
+                    $modelFCM->save($data);
+                }
+            }
+
             $response['result'] = true;
             $response['icon'] = 'success';
             $response['title'] = "Bienvenido ".ucwords($user['name']);

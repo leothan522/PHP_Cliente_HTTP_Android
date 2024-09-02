@@ -345,7 +345,6 @@ function setInputEdit(data) {
     $('#input_edit_telefono')
         .attr('placeholder',data.telefono)
         .val('');
-    $('#input_edit_fcm_token').val(data.fcm_token);
     $('#input_edit_id').val(data.id);
     $('#input_edit_password').val('');
     $('#input_edit_nueva').val('');

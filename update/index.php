@@ -42,7 +42,6 @@ if ($_POST) {
                     $response['name'] = $controller->USER_NAME;
                     $response['email'] = $controller->USER_EMAIL;
                     $response['telefono'] = $controller->USER_TELEFONO;
-                    $response['fcm_token'] = $controller->USER_FMC_TOKEN;
                 }else{
                     $response['result'] = false;
                     $response['icon'] = "info";

@@ -31,7 +31,6 @@ CREATE TABLE IF NOT EXISTS `users` (
   `role` int NOT NULL DEFAULT '0',
   `roles_id` bigint unsigned DEFAULT NULL,
   `permisos` text COLLATE utf8mb4_unicode_ci,
-  `fcm_token` text COLLATE utf8mb4_unicode_ci,
   `token_recuperacion` text COLLATE utf8mb4_unicode_ci,
   `times_recuperacion` timestamp NULL DEFAULT NULL,
   `rowquid` text COLLATE utf8mb4_unicode_ci,
@@ -40,6 +39,19 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Volcando estructura para tabla fcm_tokens
+CREATE TABLE IF NOT EXISTS `fcm_tokens` (
+    `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+    `users_id` bigint unsigned DEFAULT NULL,
+    `token` text COLLATE utf8mb4_unicode_ci NOT NULL,
+    `rowquid` text COLLATE utf8mb4_unicode_ci,
+    `created_at` timestamp NULL DEFAULT NULL,
+    `updated_at` timestamp NULL DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    KEY `fcm_tokens_users_id_foreign` (`users_id`),
+    CONSTRAINT `fcm_tokens_users_id_foreign` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+    ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

@@ -32,7 +32,7 @@
                             <input type="password" name="password" class="form-control" placeholder="Ingrese Contraseña">
                         </div>
                     </div>
-                    <input type="hidden" class="form-control mb-3" name="fcm_token" value="<?php echo FCM_TOKEN_TEST ?>" readonly>
+                    <input type="text" class="form-control mb-3" name="fcm_token" value="<?php echo FCM_TOKEN_TEST ?>" readonly>
                     <div class="form-row justify-content-end">
                         <button type="reset" class="d-none" id="btn_reset_login">Reset</button>
                         <button type="button" class="btn btn-link" onclick="rowVisible('register')">

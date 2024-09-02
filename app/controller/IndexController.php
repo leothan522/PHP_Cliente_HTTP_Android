@@ -1,6 +1,7 @@
 <?php
 namespace controller;
 
+use model\Fcm;
 use model\User;
 
 class IndexController extends Controller
@@ -73,9 +74,16 @@ class IndexController extends Controller
             }
 
             if (!empty($fcm_token)){
-                if ($user['fcm_token'] != $fcm_token){
-                    $model->update($id, 'fcm_token', $fcm_token);
-                    $cambios = true;
+                $modelFCM = new Fcm();
+                $existe = $modelFCM->existe('token', '=', $fcm_token);
+                if (!$existe){
+                    $data = [
+                        $user['id'],
+                        $fcm_token,
+                        generateString(16),
+                        getFecha()
+                    ];
+                    $modelFCM->save($data);
                 }
             }
 
@@ -89,7 +97,6 @@ class IndexController extends Controller
                 $response['name'] = ucwords($user['name']);
                 $response['email'] = strtolower($user['email']);
                 $response['telefono'] = $user['telefono'];
-                $response['fcm_token'] = $user['fcm_token'];
             }else{
                 $response['result'] = false;
                 $response['icon'] = 'warning';
