@@ -1,13 +1,19 @@
-<div class="row m-2 justify-content-center <?php echo $controller->row_login; ?>" id="row_login">
+<div class="row col-12 m-2 justify-content-center <?php echo $controller->row_login; ?>" id="row_login">
 
     <div class="col-md-6">
         <div class="card">
             <h5 class="card-header">
                 <i class="fa-solid fa-address-card"></i>
-                Login
-                <button type="button" class="btn btn-sm float-right <?php echo $controller->btn_cerrar_sesion; ?>" id="btn_cerrar_sesion">
+                <span id="title_card_login">
+                    <?php echo $controller->title; ?>
+                </span>
+                <button type="button" class="btn btn-sm float-right <?php echo $controller->btn; ?>" id="btn_cerrar_sesion">
                     <!--Cerrar Sesión-->
-                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i> Salir
+                </button>
+                <button type="button" class="btn btn-sm float-right <?php echo $controller->btn; ?>" id="btn_edit_usuario" <?php if ($controller->USER_ID){ echo 'onclick="edit(\''.$controller->USER_ID.'\')"'; } ?> >
+                    <!--Cerrar Sesión-->
+                    <i class="fa-solid fa-edit"></i> Editar
                 </button>
             </h5>
             <div class="card-body <?php echo $controller->card_body_login; ?>" id="card_body_login">
@@ -26,7 +32,7 @@
                             <input type="password" name="password" class="form-control" placeholder="Ingrese Contraseña">
                         </div>
                     </div>
-                    <input type="text" class="form-control mb-3" name="fcm_token" value="<?php echo FCM_TOKEN_TEST ?>" readonly>
+                    <input type="hidden" class="form-control mb-3" name="fcm_token" value="<?php echo FCM_TOKEN_TEST ?>" readonly>
                     <div class="form-row justify-content-end">
                         <button type="reset" class="d-none" id="btn_reset_login">Reset</button>
                         <button type="button" class="btn btn-link" onclick="rowVisible('register')">

@@ -40,14 +40,23 @@ $controller = new IndexController();
     <link href="app/resources/fontawesome/css/brands.css" rel="stylesheet">
     <link href="app/resources/fontawesome/css/solid.css" rel="stylesheet">
 
+    <style>
+        .minh-100 {
+            height: 100vh;
+        }
+    </style>
+
 </head>
 <body>
 
 <div class="container-fluid">
 
-    <?php require "app/view/card_login.php"; ?>
-    <?php require "app/view/card_register.php"; ?>
-    <?php require "app/view/card_recuperar.php"; ?>
+    <div class="row d-flex justify-content-center align-items-center minh-100">
+        <?php require "app/view/card_login.php"; ?>
+        <?php require "app/view/card_register.php"; ?>
+        <?php require "app/view/card_recuperar.php"; ?>
+        <?php require "app/view/card_edit.php"; ?>
+    </div>
 
 </div>
 

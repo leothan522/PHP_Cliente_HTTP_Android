@@ -2,8 +2,37 @@
 //$('#cedula').inputmask("9{1,8}");
 //let telefono = $('#telefono').inputmask("isComplete");
 $('#input_telefono').inputmask({"mask": "(9999) 999-99.99",});
+//Cambiamos Visibilidad de los ROWS
+function rowVisible(opcion) {
+    switch (opcion) {
+        case 'register':
+            $('#row_login').addClass('d-none');
+            $('#row_recuperar').addClass('d-none');
+            $('#row_edit').addClass('d-none');
+            $('#row_register').removeClass('d-none');
+            break;
+        case 'recuperar':
+            $('#row_register').addClass('d-none');
+            $('#row_login').addClass('d-none');
+            $('#row_edit').addClass('d-none');
+            $('#row_recuperar').removeClass('d-none');
+            break;
+        case 'edit':
+            $('#row_register').addClass('d-none');
+            $('#row_recuperar').addClass('d-none');
+            $('#row_login').addClass('d-none');
+            $('#row_edit').removeClass('d-none');
+            break;
+        default:
+            $('#row_register').addClass('d-none');
+            $('#row_recuperar').addClass('d-none');
+            $('#row_edit').addClass('d-none');
+            $('#row_login').removeClass('d-none');
+            break;
+    }
+}
 
-//Procesamos el Formulario LOGIN
+//**************** LOGIN *****************************
 $('#form_login').submit(function (e) {
     e.preventDefault();
     Cargando.fire();
@@ -19,6 +48,7 @@ $('#form_login').submit(function (e) {
                 $('#btn_reset_recuperar').click();
                 showUsuario(data.id, data.name, data.email, data.telefono);
                 Toast.fire({
+                    position: 'top',
                     icon: data.icon,
                     title: data.title
                 });
@@ -26,15 +56,16 @@ $('#form_login').submit(function (e) {
                 Alerta.fire({
                     icon: data.icon,
                     title: data.title,
-                    text: data.text
+                    text: data.message
                 });
             }
         }
     });
 });
 
-//mostramos los datos recibidos
+//**************** SHOW PERFIL ***********************
 function showUsuario(id, name, email, telefono) {
+    $('#title_card_login').text('Perfil');
     $('#span_id').text(id);
     $('#span_nombre').text(name);
     $('#span_email').text(email);
@@ -57,9 +88,12 @@ function showUsuario(id, name, email, telefono) {
     $('#input_name')
         .removeClass('is-invalid')
         .removeClass('is-valid');
+    $('#btn_edit_usuario')
+        .removeClass('d-none')
+        .attr('onclick', "edit('"+ id +"')");
 }
 
-//Cerramos sesion
+//***************** Cerramos sesion ******************
 $('#btn_cerrar_sesion').click(function (e) {
     Cargando.fire();
     $.ajax({
@@ -76,7 +110,12 @@ $('#btn_cerrar_sesion').click(function (e) {
                 $('#card_body_login').removeClass('d-none');
                 $('#btn_cerrar_sesion').addClass('d-none');
                 $('#card_footer_login').addClass('d-none');
+                $('#title_card_login').text('Login');
+                $('#btn_edit_usuario')
+                    .addClass('d-none')
+                    .removeAttr('onclick');
                 Toast.fire({
+                    position: 'top',
                     icon: data.icon,
                     title: data.title
                 });
@@ -84,7 +123,7 @@ $('#btn_cerrar_sesion').click(function (e) {
                 Alerta.fire({
                     icon: data.icon,
                     title: data.title,
-                    text: data.text
+                    text: data.message
                 });
             }
 
@@ -92,26 +131,7 @@ $('#btn_cerrar_sesion').click(function (e) {
     });
 });
 
-//Cambiamos Visibilidad de los ROWS
-function rowVisible(opcion) {
-    if (opcion === 'register') {
-        $('#row_login').addClass('d-none');
-        $('#row_recuperar').addClass('d-none');
-        $('#row_register').removeClass('d-none');
-    } else {
-        if (opcion === 'recuperar') {
-            $('#row_register').addClass('d-none');
-            $('#row_login').addClass('d-none');
-            $('#row_recuperar').removeClass('d-none');
-        } else {
-            $('#row_register').addClass('d-none');
-            $('#row_recuperar').addClass('d-none');
-            $('#row_login').removeClass('d-none');
-        }
-    }
-}
-
-//Procesamos el Formulario REGISTER
+//******************* REGISTER ************************
 $('#form_register').submit(function (e) {
     e.preventDefault();
 
@@ -136,6 +156,7 @@ $('#form_register').submit(function (e) {
                     showUsuario(data.id, data.name, data.email, data.telefono);
                     rowVisible('login');
                     Toast.fire({
+                        position: 'top',
                         icon: data.icon,
                         title: data.title
                     });
@@ -143,7 +164,7 @@ $('#form_register').submit(function (e) {
                     Alerta.fire({
                         icon: data.icon,
                         title: data.title,
-                        text: data.text,
+                        text: data.message,
                     });
                 }
             }
@@ -187,7 +208,7 @@ $('#form_register').submit(function (e) {
     }
 });
 
-//Procesamos el Formulario RECUPEAR CLAVE
+//***************** RECUPERAR CLAVE *******************
 $('#form_recuperar').submit(function (e) {
     e.preventDefault();
     Cargando.fire();
@@ -203,6 +224,7 @@ $('#form_recuperar').submit(function (e) {
                 $('#btn_reset_register').click();
                 rowVisible('login');
                 Toast.fire({
+                    position: 'top',
                     icon: data.icon,
                     title: data.title
                 });
@@ -210,11 +232,125 @@ $('#form_recuperar').submit(function (e) {
                 Alerta.fire({
                     icon: data.icon,
                     title: data.title,
-                    text: data.text
+                    text: data.message
                 });
             }
         }
     });
 });
+
+//***************** EDIT *******************
+function edit(id) {
+    Cargando.fire();
+    $.ajax({
+        type: 'POST',
+        url: 'update/',
+        data: {
+            edit: true,
+            rowquid: id
+        },
+        success: function (response) {
+
+            let data = JSON.parse(response);
+
+            if (data.result === true) {
+                rowVisible('edit');
+                setInputEdit(data);
+                Cargando.close();
+            } else {
+                if (data.error_id){
+                    $('#btn_cerrar_sesion').click();
+                    rowVisible('login');
+                    Toast.fire({
+                        position: 'top',
+                        icon: data.icon,
+                        title: data.title
+                    });
+                }else {
+                    Alerta.fire({
+                        icon: data.icon,
+                        title: data.title,
+                        text: data.message
+                    });
+                }
+            }
+
+        }
+    });
+}
+
+//******************* UPDATED ************************
+$('#form_update').submit(function (e) {
+    e.preventDefault();
+    Cargando.fire();
+    $.ajax({
+        type: 'POST',
+        url: 'update/',
+        data: $(this).serialize(),
+        success: function (response) {
+            let data = JSON.parse(response);
+            if (data.result) {
+
+                setInputEdit(data);
+
+                showUsuario(data.id, data.name, data.email, data.telefono);
+
+                if (!data.error_email && !data.error_password){
+                    rowVisible('login');
+                }
+
+                Toast.fire({
+                    position: 'top',
+                    icon: data.icon,
+                    title: data.title
+                });
+
+            } else {
+                if (data.error_id){
+                    $('#btn_cerrar_sesion').click();
+                    rowVisible('login');
+                    Toast.fire({
+                        position: 'top',
+                        icon: data.icon,
+                        title: data.title
+                    });
+                }else {
+                    Alerta.fire({
+                        icon: data.icon,
+                        title: data.title,
+                        text: data.message
+                    });
+                }
+            }
+
+            if (data.error_email){
+                $('#input_edit_email').addClass('is-invalid');
+            }
+
+            if (data.error_password){
+                $('#input_edit_password').addClass('is-invalid');
+            }
+
+        }
+    });
+});
+
+function setInputEdit(data) {
+    $('#input_edit_name')
+        .attr('placeholder', data.name)
+        .val('');
+    $('#input_edit_email')
+        .attr('placeholder',data.email)
+        .val('');
+    $('#input_edit_telefono')
+        .attr('placeholder',data.telefono)
+        .val('');
+    $('#input_edit_fcm_token').val(data.fcm_token);
+    $('#input_edit_id').val(data.id);
+    $('#input_edit_password').val('');
+    $('#input_edit_nueva').val('');
+    $('#input_edit_email').removeClass('is-invalid');
+    $('#input_edit_password').removeClass('is-invalid');
+}
 
 console.log('Hi!');

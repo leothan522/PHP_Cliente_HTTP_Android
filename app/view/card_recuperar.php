@@ -1,4 +1,4 @@
-<div class="row m-2 justify-content-center <?php echo $controller->row_recuperar; ?>" id="row_recuperar">
+<div class="row col-12 m-2 justify-content-center <?php echo $controller->row_recuperar; ?>" id="row_recuperar">
 
     <div class="col-md-6">
         <div class="card">

@@ -23,24 +23,24 @@ class GuestController extends MailerController
                 $response['result'] = true;
                 $response['icon'] = 'success';
                 $response['title'] = "Bienvenido ".ucwords($user['name']);
-                $response['text'] = "Bienvenido ".ucwords($user['name']);
-                $response['id'] = $user['id'];
+                $response['message'] = "Bienvenido ".ucwords($user['name']);
+                $response['id'] = $user['rowquid'];
                 $response['name'] = ucwords($user['name']);
                 $response['email'] = strtolower($user['email']);
                 $response['telefono'] = $user['telefono'];
-                $_SESSION[APP_KEY] = $user['id'];
+                $_SESSION[APP_KEY] = $user['rowquid'];
 
             }else{
                 $response['result'] = false;
                 $response['icon'] = 'warning';
                 $response['title'] = "Contraseña Incorrecta";
-                $response['text'] = "Estas credenciales no coinciden con nuestros registros.";
+                $response['message'] = "Estas credenciales no coinciden con nuestros registros.";
             }
         }else{
             $response['result'] = false;
             $response['icon'] = 'warning';
             $response['title'] = "Email NO registrado";
-            $response['text'] = "Estas credenciales no coinciden con nuestros registros.";
+            $response['message'] = "Estas credenciales no coinciden con nuestros registros.";
         }
         return $response;
     }
@@ -67,19 +67,19 @@ class GuestController extends MailerController
             $user = $model->first('email', '=', $email);
             $response['result'] = true;
             $response['icon'] = 'success';
-            $response['title'] = "Registrado correctamente. ".ucwords($user['name']);
-            $response['text'] = "Registrado correctamente.";
-            $response['id'] = $user['id'];
+            $response['title'] = "Bienvenido ".ucwords($user['name']);
+            $response['message'] = "Bienvenido ".ucwords($user['name']);
+            $response['id'] = $user['rowquid'];
             $response['name'] = ucwords($user['name']);
             $response['email'] = strtolower($user['email']);
             $response['telefono'] = $user['telefono'];
-            $_SESSION[APP_KEY] = $user['id'];
+            $_SESSION[APP_KEY] = $user['rowquid'];
 
         }else{
             $response['result'] = false;
             $response['icon'] = 'warning';
             $response['title'] = "Email Duplicado";
-            $response['text'] = "El correo electronico ya ha sido registrado anteriormente.";
+            $response['message'] = "El correo electronico ya ha sido registrado anteriormente.";
         }
         return $response;
     }
@@ -128,13 +128,13 @@ class GuestController extends MailerController
             $response['result'] = true;
             $response['icon'] = 'success';
             $response['title'] = "Enlace de restablecimiento Enviado.";
-            $response['text'] = "Le hemos enviado por correo electrónico el enlace para restablecer su contraseña.";
+            $response['message'] = "Le hemos enviado por correo electrónico el enlace para restablecer su contraseña.";
 
         }else{
             $response['result'] = false;
             $response['icon'] = 'warning';
             $response['title'] = "Email NO registrado";
-            $response['text'] = "El correo electronico no coincide con nuestros registros.";
+            $response['message'] = "El correo electronico no coincide con nuestros registros.";
         }
         return $response;
     }
