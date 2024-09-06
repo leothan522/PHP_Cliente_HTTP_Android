@@ -80,7 +80,7 @@ class IndexController extends Controller
                     $data = [
                         $user['id'],
                         $fcm_token,
-                        generateString(16),
+                        generarStringAleatorio(16),
                         getFecha()
                     ];
                     $modelFCM->save($data);

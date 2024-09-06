@@ -95,23 +95,25 @@ function getURLActual(): string
     return $protocolo . $host . $uri;
 }
 
-function generateString($strength = 16): string
+function generarStringAleatorio($largo = 10, $espacio = false): string
 {
-    $input = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    $input_length = strlen($input);
-    $random_string = '';
-    for ($i = 0; $i < $strength; $i++) {
-        $random_character = $input[mt_rand(0, $input_length - 1)];
-        $random_string .= $random_character;
+    $caracteres = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $caracteres = $espacio ? $caracteres . ' ' : $caracteres;
+    $string = '';
+    for ($i = 0; $i < $largo; $i++) {
+        $string .= $caracteres[rand(0, strlen($caracteres) - 1)];
     }
-    return $random_string;
+    return $string;
 }
 
-function verUtf8($string): string
+function verUtf8($string, $safeNull = false): string
 {
     //$utf8_string = "Some UTF-8 encoded BATE QUEBRADO ÑñíÍÁÜ niño ó Ó string: é, ö, ü";
     $response = null;
     $text = 'NULL';
+    if ($safeNull){
+        $text = '';
+    }
     if (!is_null($string)){
         $response = mb_convert_encoding($string, 'ISO-8859-1', 'UTF-8');
     }
@@ -121,18 +123,37 @@ function verUtf8($string): string
     return $text;
 }
 
-function getFecha($fecha = null, $format = null): Carbon
+function getFecha($fecha = null, $format = null): string
 {
     if (is_null($fecha)){
-        $date = Carbon::now(APP_TIMEZONE);
+        if (is_null($format)){
+            $date = Carbon::now(APP_TIMEZONE)->toDateString();
+        }else{
+            $date = Carbon::now(APP_TIMEZONE)->format($format);
+        }
     }else{
-        $date = Carbon::parse($fecha);
-    }
-
-    if (is_null($format)){
-        $date->toDateString();
-    }else{
-        $date->format($format);
+        if (is_null($format)){
+            $date = Carbon::parse($fecha)->format('d/m/Y');
+        }else{
+            $date = Carbon::parse($fecha)->format($format);
+        }
     }
     return $date;
+}
+
+function haceCuanto($fecha): string
+{
+    return Carbon::parse($fecha)->diffForHumans();
+}
+
+// Obtener la fecha en español
+function fechaEnLetras($fecha, $isoFormat = null): string
+{
+    // dddd => Nombre del DIA ejemplo: lunes
+    // MMMM => nombre del mes ejemplo: febrero
+    $format = "dddd D [de] MMMM [de] YYYY"; // fecha completa
+    if (!is_null($isoFormat)){
+        $format = $isoFormat;
+    }
+    return Carbon::parse($fecha)->isoFormat($format);
 }

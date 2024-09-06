@@ -24,7 +24,7 @@ class GuestController extends MailerController
                         $data = [
                             $user['id'],
                             $fcm_token,
-                            generateString(16),
+                            generarStringAleatorio(16),
                             getFecha()
                         ];
                         $modelFCM->save($data);
@@ -68,7 +68,7 @@ class GuestController extends MailerController
                 password_hash($password, PASSWORD_DEFAULT),
                 $telefono,
                 1,
-                generateString(16),
+                generarStringAleatorio(16),
                 getFecha()
             ];
 
@@ -83,7 +83,7 @@ class GuestController extends MailerController
                     $data = [
                         $user['id'],
                         $fcm_token,
-                        generateString(16),
+                        generarStringAleatorio(16),
                         getFecha()
                     ];
                     $modelFCM->save($data);
@@ -119,7 +119,7 @@ class GuestController extends MailerController
         if ($user){
 
             //$password = generateString(8);
-            $token = generateString(60);
+            $token = generarStringAleatorio(60);
             $email_url = str_replace('@', '%40', $email);
             $url_recuperar = APP_URL . '/recuperar/' . $token . '/' . $email_url;
             $hoy = getFecha();
