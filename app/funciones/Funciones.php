@@ -123,6 +123,15 @@ function verUtf8($string, $safeNull = false): string
     return $text;
 }
 
+function getRowquid($model): string
+{
+    do{
+        $rowquid = generarStringAleatorio(16);
+        $existe = $model->first('rowquid', '=', $rowquid);
+    }while($existe);
+    return $rowquid;
+}
+
 function getFecha($fecha = null, $format = null): string
 {
     if (is_null($fecha)){

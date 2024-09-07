@@ -80,7 +80,7 @@ class IndexController extends Controller
                     $data = [
                         $user['id'],
                         $fcm_token,
-                        generarStringAleatorio(16),
+                        getRowquid($modelFCM),
                         getFecha()
                     ];
                     $modelFCM->save($data);
@@ -108,6 +108,7 @@ class IndexController extends Controller
             $response['error_password'] = $error_password;
 
         }else{
+            session_destroy();
             $response['result'] = false;
             $response['error_email'] = false;
             $response['error_password'] = false;

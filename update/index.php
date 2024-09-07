@@ -3,6 +3,7 @@ session_start();
 require_once "../vendor/autoload.php";
 
 use controller\IndexController;
+
 $controller = new IndexController();
 
 $response = array();
@@ -11,7 +12,7 @@ if ($_POST) {
 
     try {
 
-        if (!isset($_POST['edit'])){
+        if (!isset($_POST['edit'])) {
 
             if (!empty($_POST['id'])) {
 
@@ -32,28 +33,19 @@ if ($_POST) {
                 $response['message'] = "Todos los campos son requeridos.";
             }
 
-        }else{
+        } else {
 
-            if (!empty($_POST['rowquid'])){
-                $rowquid = $_POST['rowquid'];
-                if ($controller->USER_ID){
-                    $response['result'] = true;
-                    $response['id'] = $controller->USER_ID;
-                    $response['name'] = $controller->USER_NAME;
-                    $response['email'] = $controller->USER_EMAIL;
-                    $response['telefono'] = $controller->USER_TELEFONO;
-                }else{
-                    $response['result'] = false;
-                    $response['icon'] = "info";
-                    $response['error_id'] = true;
-                    $response['title'] = "Sesión Cerrada.";
-                }
-            }else{
-                //faltan datos.
+            if ($controller->USER_ID) {
+                $response['result'] = true;
+                $response['id'] = $controller->USER_ID;
+                $response['name'] = $controller->USER_NAME;
+                $response['email'] = $controller->USER_EMAIL;
+                $response['telefono'] = $controller->USER_TELEFONO;
+            } else {
                 $response['result'] = false;
                 $response['icon'] = "info";
-                $response['title'] = "¡Faltan datos!";
-                $response['message'] = "El ID del Usuario es requerido.";
+                $response['error_id'] = true;
+                $response['title'] = "Sesión Cerrada.";
             }
 
         }

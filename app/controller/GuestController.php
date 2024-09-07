@@ -24,7 +24,7 @@ class GuestController extends MailerController
                         $data = [
                             $user['id'],
                             $fcm_token,
-                            generarStringAleatorio(16),
+                            getRowquid($modelFCM),
                             getFecha()
                         ];
                         $modelFCM->save($data);
@@ -61,14 +61,13 @@ class GuestController extends MailerController
         $model = new User();
         $existe = $model->existe('email', '=', $email);
         if (!$existe){
-
             $data = [
                 $name,
                 $email,
                 password_hash($password, PASSWORD_DEFAULT),
                 $telefono,
                 1,
-                generarStringAleatorio(16),
+                getRowquid($model),
                 getFecha()
             ];
 
@@ -83,7 +82,7 @@ class GuestController extends MailerController
                     $data = [
                         $user['id'],
                         $fcm_token,
-                        generarStringAleatorio(16),
+                        getRowquid($modelFCM),
                         getFecha()
                     ];
                     $modelFCM->save($data);

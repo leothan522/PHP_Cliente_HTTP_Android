@@ -22,7 +22,7 @@ class Controller
                 $this->USER_EMAIL = $user['email'];
                 $this->USER_TELEFONO = $user['telefono'];
             }else{
-                $_SESSION = array();
+                session_destroy();
             }
         }
     }

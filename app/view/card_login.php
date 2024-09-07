@@ -11,7 +11,7 @@
                     <!--Cerrar Sesión-->
                     <i class="fa-solid fa-arrow-right-from-bracket"></i> Salir
                 </button>
-                <button type="button" class="btn btn-sm float-right <?php echo $controller->btn; ?>" id="btn_edit_usuario" <?php if ($controller->USER_ID){ echo 'onclick="edit(\''.$controller->USER_ID.'\')"'; } ?> >
+                <button type="button" class="btn btn-sm float-right <?php echo $controller->btn; ?>" onclick="edit()" id="btn_edit_usuario">
                     <!--Cerrar Sesión-->
                     <i class="fa-solid fa-edit"></i> Editar
                 </button>

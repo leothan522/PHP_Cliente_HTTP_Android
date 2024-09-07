@@ -23,6 +23,17 @@ function rowVisible(opcion) {
             $('#row_login').addClass('d-none');
             $('#row_edit').removeClass('d-none');
             break;
+        case 'logout':
+            $('#row_register').addClass('d-none');
+            $('#row_recuperar').addClass('d-none');
+            $('#row_edit').addClass('d-none');
+            $('#row_login').removeClass('d-none');
+            $('#btn_cerrar_sesion').addClass('d-none');
+            $('#card_footer_login').addClass('d-none');
+            $('#title_card_login').text('Login');
+            $('#btn_edit_usuario').addClass('d-none');
+            $("#card_body_login").removeClass('d-none');
+            break;
         default:
             $('#row_register').addClass('d-none');
             $('#row_recuperar').addClass('d-none');
@@ -88,9 +99,7 @@ function showUsuario(id, name, email, telefono) {
     $('#input_name')
         .removeClass('is-invalid')
         .removeClass('is-valid');
-    $('#btn_edit_usuario')
-        .removeClass('d-none')
-        .attr('onclick', "edit('"+ id +"')");
+    $('#btn_edit_usuario').removeClass('d-none');
 }
 
 //***************** Cerramos sesion ******************
@@ -107,13 +116,7 @@ $('#btn_cerrar_sesion').click(function (e) {
             let data = JSON.parse(response);
 
             if (data.result === true) {
-                $('#card_body_login').removeClass('d-none');
-                $('#btn_cerrar_sesion').addClass('d-none');
-                $('#card_footer_login').addClass('d-none');
-                $('#title_card_login').text('Login');
-                $('#btn_edit_usuario')
-                    .addClass('d-none')
-                    .removeAttr('onclick');
+                rowVisible('logout');
                 Toast.fire({
                     position: 'top',
                     icon: data.icon,
@@ -240,27 +243,25 @@ $('#form_recuperar').submit(function (e) {
 });
 
 //***************** EDIT *******************
-function edit(id) {
+function edit() {
     Cargando.fire();
     $.ajax({
         type: 'POST',
         url: 'update/',
         data: {
             edit: true,
-            rowquid: id
         },
         success: function (response) {
 
             let data = JSON.parse(response);
 
-            if (data.result === true) {
+            if (data.result) {
                 rowVisible('edit');
                 setInputEdit(data);
                 Cargando.close();
             } else {
                 if (data.error_id){
-                    $('#btn_cerrar_sesion').click();
-                    rowVisible('login');
+                    rowVisible('logout');
                     Toast.fire({
                         position: 'top',
                         icon: data.icon,
@@ -307,8 +308,7 @@ $('#form_update').submit(function (e) {
 
             } else {
                 if (data.error_id){
-                    $('#btn_cerrar_sesion').click();
-                    rowVisible('login');
+                    rowVisible('logout');
                     Toast.fire({
                         position: 'top',
                         icon: data.icon,
